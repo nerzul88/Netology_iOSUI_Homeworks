@@ -15,6 +15,7 @@ class TabBarController: UITabBarController {
         view.backgroundColor = .systemBackground
         UITabBar.appearance().barTintColor = .systemBackground
         tabBar.tintColor = .label
+        tabBar.backgroundColor = .white
         setupVCs()
     }
     
@@ -24,8 +25,10 @@ class TabBarController: UITabBarController {
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.title = title
         navController.tabBarItem.image = image
-        navController.navigationBar.prefersLargeTitles = true
+        //navController.navigationBar.prefersLargeTitles = true
         rootViewController.navigationItem.title = title
+        //navController.navigationBar.backgroundColor = .green
+        //navController.navigationBar.isTranslucent = false
         return navController
     }
     
