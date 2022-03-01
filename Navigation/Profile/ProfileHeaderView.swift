@@ -7,6 +7,10 @@
 
 import UIKit
 
+//protocol ProfileHeaderViewProtocol: AnyObject {
+//    func didTapShowStatusButton(textFieldIsVisible: Bool, completion: @escaping () -> Void)
+//}
+
 class ProfileHeaderView: UIView {
     
     var nameLabel: UILabel!

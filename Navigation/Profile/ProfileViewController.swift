@@ -7,22 +7,20 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UITextFieldDelegate {
     
     let profileHeaderView = ProfileHeaderView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //view.backgroundColor = .lightGray
         view.addSubview(profileHeaderView)
-        //self.navigationController?.navigationBar.backgroundColor = .white
+        profileHeaderView.statusTextField.delegate = self
 
     }
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        //profileHeaderView.frame = self.view.safeAreaLayoutGuide.layoutFrame
         profileHeaderViewSetup()
     }
     
@@ -37,15 +35,17 @@ class ProfileViewController: UIViewController {
         ])
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
-    */
-
+    
+    func hideKeyboard() {
+        profileHeaderView.statusTextField.resignFirstResponder()
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        hideKeyboard()
+        return true
+    }
+    
 }
