@@ -9,52 +9,70 @@ import UIKit
 
 class FeedViewController: UIViewController {
     
-    var postButton: UIButton!
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 10
+        return stackView
+    }()
     
-    var post = Post()
+    private lazy var firstButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("First button", for: .normal)
+        button.backgroundColor = .systemGreen
+        button.layer.cornerRadius = 4
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 4, height: 4)
+        button.layer.shadowRadius = 4
+        button.layer.shadowOpacity = 0.5
+        button.addTarget(self, action: #selector(self.buttonTapped), for: .touchUpInside)
+        return button
+    }()
     
-    override func loadView() {
-        view = UIView()
-        
-        postButton = UIButton()
-        //postButton.translatesAutoresizingMaskIntoConstraints = false
-        postButton.backgroundColor = .blue
-        postButton.layer.borderWidth = 1
-        postButton.layer.cornerRadius = 5
-        postButton.frame = CGRect(x: 20, y: 200, width: 100, height: 20)
-        postButton.setTitle("Post", for: .normal)
-        postButton.addTarget(self, action: #selector(showPost), for: .touchUpInside)
-        view.addSubview(postButton)
-        
-//        NSLayoutConstraint.activate([
-//            postButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//            postButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//
-//        ])
-    }
+    private lazy var secondButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Second button", for: .normal)
+        button.backgroundColor = .systemRed
+        button.layer.cornerRadius = 4
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 4, height: 4)
+        button.layer.shadowRadius = 4
+        button.layer.shadowOpacity = 0.5
+        button.addTarget(self, action: #selector(self.buttonTapped), for: .touchUpInside)
+        return button
+    }()
+    
+    private var post = Post()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        drawSelf()
     }
     
-    @objc func showPost() {
+    private func drawSelf() {
+        self.view.addSubview(stackView)
+        self.stackView.addArrangedSubview(firstButton)
+        self.stackView.addArrangedSubview(secondButton)
+        
+        let centerYStackViewConstraint = self.stackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+        let leadingStackViewConstraint = self.stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10)
+        let trailingStackViewConstraint = self.stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10)
+        let heightStackViewConstraint = self.stackView.heightAnchor.constraint(equalToConstant: 110)
+        
+        NSLayoutConstraint.activate([
+            centerYStackViewConstraint,
+            leadingStackViewConstraint,
+            trailingStackViewConstraint,
+            heightStackViewConstraint
+        ])
+    }
+    
+    @objc private func buttonTapped() {
         let postVC = PostViewController()
         postVC.post = post
         self.navigationController?.pushViewController(postVC, animated: true)
     }
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
