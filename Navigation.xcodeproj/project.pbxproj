@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BD94C6E827C3AECC00F078AC /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD94C6E727C3AECC00F078AC /* ProfileHeaderView.swift */; };
+		BDB9712C27D7C2AE0088EB3D /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB9712B27D7C2AE0088EB3D /* LogInViewController.swift */; };
 		BDFD997F27BE5DA400FD2C23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFD997E27BE5DA400FD2C23 /* AppDelegate.swift */; };
 		BDFD998127BE5DA400FD2C23 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFD998027BE5DA400FD2C23 /* SceneDelegate.swift */; };
 		BDFD998827BE5DA500FD2C23 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BDFD998727BE5DA500FD2C23 /* Assets.xcassets */; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		BD94C6E727C3AECC00F078AC /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		BDB9712B27D7C2AE0088EB3D /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		BDFD997B27BE5DA400FD2C23 /* Navigation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDFD997E27BE5DA400FD2C23 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BDFD998027BE5DA400FD2C23 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -52,6 +54,7 @@
 			children = (
 				BD94C6E727C3AECC00F078AC /* ProfileHeaderView.swift */,
 				BDFD999627BE65C900FD2C23 /* ProfileViewController.swift */,
+				BDB9712B27D7C2AE0088EB3D /* LogInViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -176,6 +179,7 @@
 				BDFD999527BE65B000FD2C23 /* FeedViewController.swift in Sources */,
 				BDFD997F27BE5DA400FD2C23 /* AppDelegate.swift in Sources */,
 				BDFD999E27BE7F3200FD2C23 /* InfoViewController.swift in Sources */,
+				BDB9712C27D7C2AE0088EB3D /* LogInViewController.swift in Sources */,
 				BDFD998127BE5DA400FD2C23 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

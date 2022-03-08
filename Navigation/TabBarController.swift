@@ -25,28 +25,16 @@ class TabBarController: UITabBarController {
         let navController = UINavigationController(rootViewController: rootViewController)
         navController.tabBarItem.title = title
         navController.tabBarItem.image = image
-        //navController.navigationBar.prefersLargeTitles = true
         rootViewController.navigationItem.title = title
-        //navController.navigationBar.backgroundColor = .green
-        //navController.navigationBar.isTranslucent = false
+        
         return navController
     }
     
     func setupVCs() {
         viewControllers = [
             createNavController(for: FeedViewController(), title: NSLocalizedString("Feed", comment: ""), image: UIImage(systemName: "house")!),
-            createNavController(for: ProfileViewController(), title: NSLocalizedString("Profile", comment: ""), image: UIImage(systemName: "person")!)
+            //createNavController(for: ProfileViewController(), title: NSLocalizedString("Profile", comment: ""), image: UIImage(systemName: "person")!)
+            createNavController(for: LogInViewController(), title: NSLocalizedString("Log In", comment: ""), image: UIImage(systemName: "person")!)
         ]
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
