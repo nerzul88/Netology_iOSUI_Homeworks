@@ -162,7 +162,6 @@ class LogInViewController: UIViewController {
     @objc private func buttonClicked() {
         let profileViewController = ProfileViewController()
         navigationController?.pushViewController(profileViewController, animated: true)
-        navigationController?.navigationBar.isHidden = true
     }
 
 }
