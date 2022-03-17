@@ -84,6 +84,24 @@ class ProfileHeaderView: UIView, UITextFieldDelegate {
         return stackView
     }()
     
+    private lazy var alphaView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    private lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.layer.cornerRadius = 20
+        button.alpha = 0
+        button.clipsToBounds = true
+        button.setBackgroundImage(UIImage(named: "closeButton"), for: .normal)
+        button.addTarget(self, action: #selector(self.didTapCloseButton), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private var statusText: String = "Waiting for something..."
     private var titleText: String = "Milwaukee Bucks"
     private var setStatusButtonTopConstraint: NSLayoutConstraint?
@@ -173,6 +191,10 @@ class ProfileHeaderView: UIView, UITextFieldDelegate {
                 self.statusLabel.text = self.statusText
             }
         }
+    }
+    
+    @objc private func didTapCloseButton() {
+        
     }
     
     func changeTitle(title: String) {

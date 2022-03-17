@@ -8,6 +8,8 @@
 import UIKit
 
 class LogInViewController: UIViewController {
+    
+    private lazy var validationData = ValidationData()
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -85,6 +87,19 @@ class LogInViewController: UIViewController {
         return button
     }()
     
+    private lazy var invalidDataLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        //label.text = "Password should be longer than 6 characters and contains at least one:\n- uppercase and lowercase letter (A, z)\n- numeric character (0-9)\n- special character (any character your environment will accept that is not an uppercase or a lowercase letter or a numeric character — for example, !, %, @, #, and so on)"
+        //label.textAlignment = .left
+        label.textColor = .lightGray
+        label.font = .systemFont(ofSize: 12)
+        label.numberOfLines = 8
+        label.contentMode = .scaleToFill
+        label.isHidden = true
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -98,6 +113,7 @@ class LogInViewController: UIViewController {
         self.contentView.addSubview(self.logInButton)
         self.contentView.addSubview(self.logoImageView)
         self.contentView.addSubview(self.loginPasswordStackView)
+        self.contentView.addSubview(self.invalidDataLabel)
         self.loginPasswordStackView.addArrangedSubview(self.loginTextField)
         self.loginPasswordStackView.addArrangedSubview(self.passwordTextField)
     }
@@ -130,6 +146,11 @@ class LogInViewController: UIViewController {
         let trailingLogInButtonConstraint = self.logInButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
         let heightLogInButtonConstraint = self.logInButton.heightAnchor.constraint(equalToConstant: 50)
         
+        let topInvalidDataLabelConstraint = self.invalidDataLabel.topAnchor.constraint(equalTo: self.logInButton.bottomAnchor, constant: 10)
+        let leadingInvalidDataLabelConstraint = self.invalidDataLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 20)
+        let trailingInvalidDataLabelConstraint = self.invalidDataLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -20)
+            
+        
         NSLayoutConstraint.activate([
             topConstraint,
             leftConstraint,
@@ -155,13 +176,86 @@ class LogInViewController: UIViewController {
             topLogInButtonConstraint,
             leadingLogInButtonConstraint,
             trailingLogInButtonConstraint,
-            heightLogInButtonConstraint
+            heightLogInButtonConstraint,
+            
+            topInvalidDataLabelConstraint,
+            leadingInvalidDataLabelConstraint,
+            trailingInvalidDataLabelConstraint
         ])
     }
     
-    @objc private func buttonClicked() {
-        let profileViewController = ProfileViewController()
-        navigationController?.pushViewController(profileViewController, animated: true)
-    }
+    private func validEmail(email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
 
+        let validEmail = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return validEmail.evaluate(with: email)
+    }
+    
+    private func validPassword(password : String) -> Bool {
+        let passwordReg =  ("(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z])(?=.*[@#$%^&*]).{8,}")
+        let passwordTesting = NSPredicate(format: "SELF MATCHES %@", passwordReg)
+        return passwordTesting.evaluate(with: password) && password.count > 6
+    }
+    
+    private func longPassword(password : String) -> Bool {
+        return password.count > 6
+    }
+    
+    @objc private func buttonClicked() {
+        guard let enteredEmail = loginTextField.text else {return}
+        guard let enteredPassword = passwordTextField.text else {return}
+        
+        let login = validEmail(email: enteredEmail)
+        let password = validPassword(password: enteredPassword)
+        
+        if enteredEmail.isEmpty && enteredPassword.isEmpty {
+            loginTextField.shake()
+            passwordTextField.shake()
+        } else if enteredEmail.isEmpty {
+            loginTextField.shake()
+        } else if enteredPassword.isEmpty {
+            passwordTextField.shake()
+        } else {
+            if !password && !login {
+                invalidDataLabel.text = validationData.invalidEmailAndPassword
+                invalidDataLabel.textAlignment = .center
+                invalidDataLabel.isHidden = false
+                passwordTextField.shake()
+                loginTextField.shake()
+            } else if !password {
+                invalidDataLabel.text = validationData.invalidPasswordText
+                invalidDataLabel.textAlignment = .left
+                invalidDataLabel.isHidden = false
+                passwordTextField.shake()
+            } else if !login {
+                invalidDataLabel.text = validationData.invalidEmailText
+                invalidDataLabel.textAlignment = .center
+                invalidDataLabel.isHidden = false
+                loginTextField.shake()
+            } else {
+                if loginTextField.text != validationData.defaultLogin || passwordTextField.text != validationData.defaultPassword {
+                    let ac = UIAlertController(title: "Incorrect login or password", message: nil, preferredStyle: .alert)
+                    ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    present(ac, animated: true)
+                } else {
+                    let profileViewController = ProfileViewController()
+                    navigationController?.pushViewController(profileViewController, animated: true)
+                }
+            }
+        }
+        
+    }
+    
+}
+
+extension UIView {
+    func shake(count : Float = 3,for duration : TimeInterval = 0.3,withTranslation translation : Float = 3) {
+        let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+        animation.repeatCount = count
+        animation.duration = duration/TimeInterval(animation.repeatCount)
+        animation.autoreverses = true
+        animation.values = [translation, -translation]
+        layer.add(animation, forKey: "shake")
+    }
 }
