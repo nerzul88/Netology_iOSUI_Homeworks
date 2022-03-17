@@ -9,6 +9,18 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
+//    var isLiked = false
+    
+//    private var likesCount = 0 {
+//        didSet {
+//            updateLikes(with: likesCount)
+//        }
+//    }
+//
+//    public func addLike() {
+//        likesCount += 1
+//    }
+    
     private lazy var profileHeaderView: ProfileHeaderView = {
         let view = ProfileHeaderView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -111,17 +123,27 @@ class ProfileViewController: UIViewController {
     }
     
     private func addDataSource() {
-        self.dataSource.append(.init(author: "Steam Jet выступили с \"шестым игроком\" ", description: "Концерт Steam Jet в клубе Action состоялся с двумя басистами. Курьёз произошёл по причине того, что оригинального басиста изначально должен был заменить \"шестой полевой\" музыкант - Александр Мутин. Однако, как оказалось позже, Владимир Пакин всё же смог дать концерт и, чтобы не нарушать обещание, Александр сыграл с группой несколько композиций.", image: "Pic01.jpg", likes: 25, views: 30))
-        self.dataSource.append(.init(author: "Поздравляем с пополнением!", description: "У басиста группы Steam Jet Владимира Пакина на днях произошло пополнение в семействе - у него родился сын! Мальчика назвали Платоном - в честь кого, пока непонятно. Напомним, что Владимир сам работает акушером-гинекологом и на его счету не один десяток рождённый малыш.", image: "Pic02", likes: 23, views: 28))
-        self.dataSource.append(.init(author: "С обновлением!", description: "Ритм-гитарист Steam Jet Павел Власов недавно приобрёл новую гитару. Интересно то, что гитара старше него самого почти на пятнадцать лет! Желаем Павлу крепких струн и чтобы Хэтфилд обзавидовался!", image: "Pic03", likes: 15, views: 18))
-                
+        self.dataSource.append(post1)
+        self.dataSource.append(post2)
+        self.dataSource.append(post3)
     }
+    
+//    public func updateLikes(with value: inout Int) {
+//        isLiked.toggle()
+//        value += 1
+//    }
+//    
+//    private func updateLikesLabel(model: PostTableViewCell.ViewModel) -> PostTableViewCell.ViewModel {
+//        var newModel = model
+//        updateLikes(with: &newModel.likes)
+//        return newModel
+//    }
     
     @objc func didTapSetTitleButton() {
         let ac = UIAlertController(title: "Set title", message: "Enter new title", preferredStyle: .alert)
         ac.addTextField()
         
-        let okAction = UIAlertAction(title: "Ok", style: .default) { [weak self, weak ac] _ in
+        let okAction = UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
             guard let newTitle = ac?.textFields?[0].text else {return}
             if newTitle.isEmpty {
                 let ac = UIAlertController(title: "You should enter something", message: nil, preferredStyle: .alert)

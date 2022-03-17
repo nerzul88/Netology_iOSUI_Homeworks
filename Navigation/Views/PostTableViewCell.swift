@@ -74,11 +74,16 @@ class PostTableViewCell: UITableViewCell {
     
     private lazy var likesLabel: UILabel = {
         let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = .clear
         label.font = UIFont(name: "System", size: 16)
         label.textColor = .black
         label.setContentCompressionResistancePriority(UILayoutPriority(750), for: .vertical)
-        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(likeLabelTapped))
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tap)
+        
         return label
     }()
     
@@ -161,6 +166,11 @@ class PostTableViewCell: UITableViewCell {
         return [
             topConstraint, leadingConstraint, trailingConstraint, bottomConstraint
         ]
+    }
+    
+    @objc func likeLabelTapped() {
+        print("Like label tapped")
+        
     }
 
 }

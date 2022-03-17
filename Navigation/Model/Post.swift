@@ -13,5 +13,4 @@ struct Post {
     let image: String
     let likes: Int
     let views: Int
-    //var title: String = "Post"
 }
