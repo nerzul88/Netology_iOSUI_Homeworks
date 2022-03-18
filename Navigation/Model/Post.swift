@@ -11,6 +11,8 @@ struct Post {
     let author: String
     let description: String
     let image: String
-    let likes: Int
-    let views: Int
+    var likes: Int
+    var views: Int
+    var isLiked: Bool
+    var isViewed: Bool
 }

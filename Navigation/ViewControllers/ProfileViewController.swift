@@ -7,9 +7,10 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsDelegate {
     
 //    var isLiked = false
+//    var isViewed = false
     
 //    private var likesCount = 0 {
 //        didSet {
@@ -20,6 +21,24 @@ class ProfileViewController: UIViewController {
 //    public func addLike() {
 //        likesCount += 1
 //    }
+    
+    func viewsChanged(at indexPath: IndexPath) {
+        dataSource[indexPath.row - 1].views += 1
+        self.tableView.reloadData()
+    }
+    
+    func likesChanged(at indexPath: IndexPath) {
+        
+        if !dataSource[indexPath.row - 1].isLiked {
+            dataSource[indexPath.row - 1].likes += 1
+            dataSource[indexPath.row - 1].isLiked.toggle()
+        } else {
+            dataSource[indexPath.row - 1].likes += 1
+            dataSource[indexPath.row - 1].isLiked.toggle()
+        }
+        
+        self.tableView.reloadData()
+    }
     
     private lazy var profileHeaderView: ProfileHeaderView = {
         let view = ProfileHeaderView(frame: .zero)
@@ -70,6 +89,7 @@ class ProfileViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
+        
     }
     
     private func profileHeaderViewSetup() {
@@ -185,13 +205,17 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "DefaultCell", for: indexPath)
                 return cell
             }
+            cell.likesDelegate = self
             let article = self.dataSource[indexPath.row - 1]
             let viewModel = PostTableViewCell.ViewModel(author: article.author,
                                                         image: article.image,
                                                         description: article.description,
                                                         likes: article.likes,
-                                                        views: article.views)
+                                                        views: article.views,
+                                                        isLiked: article.isLiked,
+                                                        isViewed: article.isViewed)
             cell.setup(with: viewModel)
+            //cell.likesDelegate?.likesChanged(at: indexPath)
             return cell
         }
     }
@@ -199,8 +223,36 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView( _ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
         self.navigationController?.pushViewController(PhotosViewController(), animated: true)
-        } else { return }
-    }    
+        } else {
+            let vc = DetailPostViewController()
+            vc.author = dataSource[indexPath.row - 1].author
+            vc.descriptionText = dataSource[indexPath.row - 1].description
+            vc.image = dataSource[indexPath.row - 1].image
+            vc.likes = dataSource[indexPath.row - 1].likes
+            vc.views = dataSource[indexPath.row - 1].views
+            vc.index = indexPath
+            vc.isViewed = dataSource[indexPath.row - 1].isViewed
+            if !dataSource[indexPath.row - 1].isViewed {
+                viewsChanged(at: indexPath)
+            }
+            navigationController?.pushViewController(vc, animated: true)
+            dataSource[indexPath.row - 1].isViewed = true
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        if indexPath.row != 0 {
+            return .delete
+        }
+        return .none
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            dataSource.remove(at: indexPath.row - 1)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
     
 }
 

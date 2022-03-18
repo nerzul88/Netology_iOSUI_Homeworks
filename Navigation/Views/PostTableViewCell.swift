@@ -9,12 +9,16 @@ import UIKit
 
 class PostTableViewCell: UITableViewCell {
     
+    weak var likesDelegate: ChangeLikesDelegate?
+    
     struct ViewModel: ViewModelProtocol {
         let author: String
         let image: String
         let description: String
         var likes: Int
         var views: Int
+        var isLiked: Bool
+        var isViewed: Bool
     }
     
     private lazy var backView: UIView = {
@@ -170,7 +174,7 @@ class PostTableViewCell: UITableViewCell {
     
     @objc func likeLabelTapped() {
         print("Like label tapped")
-        
+        self.likesDelegate?.likesChanged(at: )
     }
 
 }
