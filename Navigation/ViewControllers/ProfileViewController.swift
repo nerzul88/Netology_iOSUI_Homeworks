@@ -22,20 +22,25 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
 //        likesCount += 1
 //    }
     
+    var likesCount = 0
+    
     func viewsChanged(at indexPath: IndexPath) {
         dataSource[indexPath.row - 1].views += 1
         self.tableView.reloadData()
     }
     
-    func likesChanged(at indexPath: IndexPath) {
+    func likesChanged() {
         
-        if !dataSource[indexPath.row - 1].isLiked {
-            dataSource[indexPath.row - 1].likes += 1
-            dataSource[indexPath.row - 1].isLiked.toggle()
-        } else {
-            dataSource[indexPath.row - 1].likes += 1
-            dataSource[indexPath.row - 1].isLiked.toggle()
-        }
+        likesCount += 1
+        
+        
+//        if !dataSource[indexPath.row - 1].isLiked {
+//            dataSource[indexPath.row - 1].likes += 1
+//            dataSource[indexPath.row - 1].isLiked.toggle()
+//        } else {
+//            dataSource[indexPath.row - 1].likes += 1
+//            dataSource[indexPath.row - 1].isLiked.toggle()
+//        }
         
         self.tableView.reloadData()
     }
@@ -207,15 +212,17 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
             }
             cell.likesDelegate = self
             let article = self.dataSource[indexPath.row - 1]
+            likesCount = article.likes
+            
             let viewModel = PostTableViewCell.ViewModel(author: article.author,
                                                         image: article.image,
                                                         description: article.description,
-                                                        likes: article.likes,
+                                                        likes: likesCount,
                                                         views: article.views,
                                                         isLiked: article.isLiked,
                                                         isViewed: article.isViewed)
             cell.setup(with: viewModel)
-            //cell.likesDelegate?.likesChanged(at: indexPath)
+            //likesChanged()
             return cell
         }
     }

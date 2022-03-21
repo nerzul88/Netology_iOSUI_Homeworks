@@ -174,7 +174,7 @@ class PostTableViewCell: UITableViewCell {
     
     @objc func likeLabelTapped() {
         print("Like label tapped")
-        self.likesDelegate?.likesChanged(at: )
+        self.likesDelegate?.likesChanged()
     }
 
 }

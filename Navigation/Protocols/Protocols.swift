@@ -14,7 +14,7 @@ protocol Setupable {
 }
 
 protocol ChangeLikesDelegate: AnyObject {
-    func likesChanged(at indexPath: IndexPath)
+    func likesChanged()
 }
 
 protocol ChangeViewsDelegate: AnyObject {
