@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LogInViewController: UIViewController {
+class LogInViewController: UIViewController, UITextFieldDelegate {
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -90,6 +90,13 @@ class LogInViewController: UIViewController {
 
         self.configureSubviews()
         self.setupConstraints()
+        self.loginTextField.delegate = self
+        self.passwordTextField.delegate = self
+        
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+
     }
     
     private func configureSubviews() {
@@ -104,10 +111,10 @@ class LogInViewController: UIViewController {
     
     private func setupConstraints() {
         
-        let topConstraint = self.scrollView.topAnchor.constraint(equalTo: self.view.topAnchor)
+        let topConstraint = self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
         let leftConstraint = self.scrollView.leftAnchor.constraint(equalTo: self.view.leftAnchor)
         let rightConstraint = self.scrollView.rightAnchor.constraint(equalTo: self.view.rightAnchor)
-        let bottomConstraint = self.scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+        let bottomConstraint = self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
         
         let contentViewTopConstraint = self.contentView.topAnchor.constraint(equalTo: self.scrollView.topAnchor)
         let contentViewBottomConstraint = self.contentView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor)
@@ -115,12 +122,15 @@ class LogInViewController: UIViewController {
         let contentViewWidthConstraint = self.contentView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor)
         let contentViewHeightConstraint = self.contentView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor)
         
-        let topLogoImageViewConstraint = self.logoImageView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 120)
+        let topLogoImageViewConstraint = self.logoImageView.topAnchor.constraint(lessThanOrEqualTo: self.contentView.topAnchor, constant: 120)
+        topLogoImageViewConstraint.priority = UILayoutPriority(999)
         let centerXLogoImageViewConstraint = self.logoImageView.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor)
         let widthLogoImageViewConstraint = self.logoImageView.widthAnchor.constraint(equalToConstant: 100)
         let heightLogoImageViewConstraint = self.logoImageView.heightAnchor.constraint(equalToConstant: 100)
+        let bottomLogoImageViewConstraint = self.logoImageView.bottomAnchor.constraint(greaterThanOrEqualTo: self.loginPasswordStackView.topAnchor, constant: -70)
         
-        let topLoginPasswordStackViewConstraint = self.loginPasswordStackView.topAnchor.constraint(equalTo: self.logoImageView.bottomAnchor, constant: 120)
+        //let topLoginPasswordStackViewConstraint = self.loginPasswordStackView.topAnchor.constraint(equalTo: self.logoImageView.bottomAnchor, constant: 120)
+        let centerYLoginPasswordStackViewConstraint = self.loginPasswordStackView.centerYAnchor.constraint(equalTo: self.contentView.centerYAnchor)
         let leftLoginPasswordStackViewConstraint = self.loginPasswordStackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16)
         let rightLoginPasswordStackViewConstraint = self.loginPasswordStackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -16)
         let heightLoginPasswordStackViewConstraint = self.loginPasswordStackView.heightAnchor.constraint(equalToConstant: 100)
@@ -146,8 +156,10 @@ class LogInViewController: UIViewController {
             centerXLogoImageViewConstraint,
             widthLogoImageViewConstraint,
             heightLogoImageViewConstraint,
+            bottomLogoImageViewConstraint,
             
-            topLoginPasswordStackViewConstraint,
+            //topLoginPasswordStackViewConstraint,
+            centerYLoginPasswordStackViewConstraint,
             leftLoginPasswordStackViewConstraint,
             rightLoginPasswordStackViewConstraint,
             heightLoginPasswordStackViewConstraint,
@@ -159,10 +171,33 @@ class LogInViewController: UIViewController {
         ])
     }
     
+    func hideKeyboard() {
+        self.loginTextField.resignFirstResponder()
+        self.passwordTextField.resignFirstResponder()
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        hideKeyboard()
+        return true
+    }
+    
     @objc private func buttonClicked() {
         let profileViewController = ProfileViewController()
         navigationController?.pushViewController(profileViewController, animated: true)
         navigationController?.navigationBar.isHidden = true
+    }
+    
+    @objc func adjustForKeyboard (notification: Notification){
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            let contentOffset: CGPoint = notification.name == UIResponder.keyboardWillHideNotification ? .zero : CGPoint(x: 0, y: keyboardHeight)
+            self.scrollView.contentOffset = contentOffset
+        }
     }
 
 }
