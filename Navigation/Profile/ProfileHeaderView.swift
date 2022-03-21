@@ -89,6 +89,8 @@ class ProfileHeaderView: UIView, UITextFieldDelegate {
     private var setStatusButtonTopConstraint: NSLayoutConstraint?
     private var setStatusButtonBottomConstraint: NSLayoutConstraint?
     
+    weak var delegate: ProfileHeaderViewProtocol?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.statusTextField.delegate = self
@@ -101,7 +103,6 @@ class ProfileHeaderView: UIView, UITextFieldDelegate {
     }
     
     private func drawSelf(){
-        //self.backgroundColor = .lightGray
         
         self.addSubview(self.infoStackView)
         self.addSubview(self.setStatusButton)
@@ -173,6 +174,11 @@ class ProfileHeaderView: UIView, UITextFieldDelegate {
                 self.statusLabel.text = self.statusText
             }
         }
+        
+        self.delegate?.didTapStatusButton(textFieldIsVisible: self.statusTextField.isHidden) { [weak self] in
+            self?.statusTextField.isHidden.toggle()
+        }
+        
     }
     
     func changeTitle(title: String) {

@@ -12,3 +12,7 @@ protocol ViewModelProtocol {}
 protocol Setupable {
     func setup(with viewModel: ViewModelProtocol)
 }
+
+protocol ProfileHeaderViewProtocol: AnyObject {
+    func didTapStatusButton(textFieldIsVisible: Bool, completion: @escaping () -> Void)
+}

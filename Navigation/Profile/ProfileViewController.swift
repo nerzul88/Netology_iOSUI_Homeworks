@@ -12,6 +12,7 @@ class ProfileViewController: UIViewController {
     private lazy var profileHeaderView: ProfileHeaderView = {
         let view = ProfileHeaderView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
         return view
     }()
     
@@ -27,8 +28,9 @@ class ProfileViewController: UIViewController {
     }()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "DefaultCell")
@@ -40,36 +42,16 @@ class ProfileViewController: UIViewController {
         return tableView
     }()
     
-    private var heightConstraint: NSLayoutConstraint?
+    private var headerHeight: CGFloat = 220
     
     private var dataSource: [Post] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        profileHeaderViewSetup()
         setTitleButtonSetup()
         setupTableView()
         addDataSource()
-        print(dataSource.count)
-    }
-
-    private func profileHeaderViewSetup() {
-        self.view.backgroundColor = .white
-        self.view.addSubview(self.profileHeaderView)
-        //self.view.addSubview(setTitleButton)
-        
-        let topConstraint = self.profileHeaderView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = self.profileHeaderView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor)
-        let trailingConstraint = self.profileHeaderView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
-        self.heightConstraint = self.profileHeaderView.heightAnchor.constraint(equalToConstant: 220)
-        
-        NSLayoutConstraint.activate([
-            topConstraint,
-            leadingConstraint,
-            trailingConstraint,
-            self.heightConstraint
-        ].compactMap({$0}))
     }
     
     private func setTitleButtonSetup() {
@@ -91,7 +73,7 @@ class ProfileViewController: UIViewController {
     private func setupTableView() {
         self.view.addSubview(self.tableView)
         
-        let tableViewTopConstraint = self.tableView.topAnchor.constraint(equalTo: self.profileHeaderView.bottomAnchor)
+        let tableViewTopConstraint = self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
         let tableViewBottomConstraint = self.tableView.bottomAnchor.constraint(equalTo: self.setTitleButton.topAnchor)
         let tableViewLeadingConstraint = self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10)
         let tableViewTrailingConstraint = self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
@@ -159,6 +141,31 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
                                                     views: article.views)
         cell.setup(with: viewModel)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        var headerView = UIView()
+        if section == 0 {
+            headerView = ProfileHeaderView()
+        }
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return  headerHeight
+    }
+}
+
+extension ProfileViewController: ProfileHeaderViewProtocol {
+    
+    func didTapStatusButton(textFieldIsVisible: Bool, completion: @escaping () -> Void) {
+        self.headerHeight = textFieldIsVisible ? 220 : 265
+        UIView.animate(withDuration: 0.3, delay: 0.1) {
+            self.view.layoutIfNeeded()
+        } completion: { _ in
+            completion()
+        }
+        self.tableView.reloadData()
     }
 }
 
