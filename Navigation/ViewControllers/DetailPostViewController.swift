@@ -110,10 +110,6 @@ class DetailPostViewController: UIViewController {
         }
         label.setContentCompressionResistancePriority(UILayoutPriority(750), for: .vertical)
         
-        //let tap = UITapGestureRecognizer(target: self, action: #selector(likeLabelTapped))
-        //label.isUserInteractionEnabled = true
-        //label.addGestureRecognizer(tap)
-        
         return label
     }()
     
@@ -162,13 +158,11 @@ class DetailPostViewController: UIViewController {
         let scrollViewConstraints = self.scrollViewConstraints()
         let contentViewConstraints = self.contentViewConstraints()
         let stackViewPostConstraints = self.stackViewPostConstraints()
-        //let stackViewLikesViewsConstraints = self.stackViewLikesViewsConstraints()
         
         NSLayoutConstraint.activate(
             scrollViewConstraints +
             contentViewConstraints +
             stackViewPostConstraints
-            //stackViewLikesViewsConstraints
         )
     }
     

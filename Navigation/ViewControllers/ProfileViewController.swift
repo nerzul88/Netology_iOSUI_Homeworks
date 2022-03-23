@@ -45,6 +45,8 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
         self.tableView.reloadData()
     }
     
+    private var headerHeight: CGFloat = 220
+    
     private lazy var profileHeaderView: ProfileHeaderView = {
         let view = ProfileHeaderView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -63,7 +65,7 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
     }()
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
         tableView.delegate = self
@@ -84,7 +86,6 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        profileHeaderViewSetup()
         setTitleButtonSetup()
         setupTableView()
         addDataSource()
@@ -133,7 +134,7 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
     private func setupTableView() {
         self.view.addSubview(self.tableView)
         
-        let tableViewTopConstraint = self.tableView.topAnchor.constraint(equalTo: self.profileHeaderView.bottomAnchor)
+        let tableViewTopConstraint = self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
         let tableViewBottomConstraint = self.tableView.bottomAnchor.constraint(equalTo: self.setTitleButton.topAnchor)
         let tableViewLeadingConstraint = self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10)
         let tableViewTrailingConstraint = self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
@@ -222,7 +223,7 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
                                                         isLiked: article.isLiked,
                                                         isViewed: article.isViewed)
             cell.setup(with: viewModel)
-            //likesChanged()
+            likesChanged()
             return cell
         }
     }
@@ -261,6 +262,17 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        var headerView = UIView()
+        if section == 0 {
+            headerView = ProfileHeaderView()
+        }
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return  headerHeight
+    }
+    
 }
-
 
