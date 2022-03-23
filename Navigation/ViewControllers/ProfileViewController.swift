@@ -23,6 +23,7 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
 //    }
     
     var likesCount = 0
+    var liked = false
     
     func viewsChanged(at indexPath: IndexPath) {
         dataSource[indexPath.row - 1].views += 1
@@ -30,8 +31,17 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
     }
     
     func likesChanged() {
+        //guard let liked = liked else {return}
+
+        if !liked {
+            likesCount += 1
+            liked.toggle()
+        } else {
+            likesCount -= 1
+            liked.toggle()
+        }
         
-        likesCount += 1
+        
         
         
 //        if !dataSource[indexPath.row - 1].isLiked {
@@ -41,8 +51,8 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
 //            dataSource[indexPath.row - 1].likes += 1
 //            dataSource[indexPath.row - 1].isLiked.toggle()
 //        }
-        
         self.tableView.reloadData()
+        //self.liked = nil
     }
     
     private var headerHeight: CGFloat = 220
@@ -212,18 +222,25 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
                 return cell
             }
             cell.likesDelegate = self
+            if self.liked != self.dataSource[indexPath.row - 1].isLiked {
+                self.dataSource[indexPath.row - 1].isLiked = liked
+            }
             let article = self.dataSource[indexPath.row - 1]
-            likesCount = article.likes
-            
+            let likes = article.likes + likesCount
+            self.dataSource[indexPath.row - 1].likes = likes
+            //liked = article.isLiked
+            print("IndexPath: \(indexPath.row - 1)")
+            print("IsLiked: \(liked)")
+            print("Likes count: \(likes)")
             let viewModel = PostTableViewCell.ViewModel(author: article.author,
                                                         image: article.image,
                                                         description: article.description,
-                                                        likes: likesCount,
+                                                        likes: likes,
                                                         views: article.views,
                                                         isLiked: article.isLiked,
                                                         isViewed: article.isViewed)
             cell.setup(with: viewModel)
-            likesChanged()
+            likesCount = 0
             return cell
         }
     }

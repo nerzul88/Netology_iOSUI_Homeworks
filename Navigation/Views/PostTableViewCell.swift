@@ -10,6 +10,8 @@ import UIKit
 class PostTableViewCell: UITableViewCell {
     
     weak var likesDelegate: ChangeLikesDelegate?
+    var likesCount = 0
+    var isLiked = false
     
     struct ViewModel: ViewModelProtocol {
         let author: String
@@ -189,5 +191,6 @@ extension PostTableViewCell: Setupable {
         self.pictureImageView.image = UIImage(named: viewModel.image)
         self.likesLabel.text = "Likes: \(String(viewModel.likes))"
         self.viewsLabel.text = "Views: \(String(viewModel.views))"
+        
     }
 }
