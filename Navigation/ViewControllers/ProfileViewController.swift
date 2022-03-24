@@ -9,21 +9,7 @@ import UIKit
 
 class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsDelegate {
     
-//    var isLiked = false
-//    var isViewed = false
-    
-//    private var likesCount = 0 {
-//        didSet {
-//            updateLikes(with: likesCount)
-//        }
-//    }
-//
-//    public func addLike() {
-//        likesCount += 1
-//    }
-    
     var likesCount = 0
-    var liked = false
     
     func viewsChanged(at indexPath: IndexPath) {
         dataSource[indexPath.row - 1].views += 1
@@ -31,28 +17,11 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
     }
     
     func likesChanged() {
-        //guard let liked = liked else {return}
+        
+        likesCount += 1
 
-        if !liked {
-            likesCount += 1
-            liked.toggle()
-        } else {
-            likesCount -= 1
-            liked.toggle()
-        }
-        
-        
-        
-        
-//        if !dataSource[indexPath.row - 1].isLiked {
-//            dataSource[indexPath.row - 1].likes += 1
-//            dataSource[indexPath.row - 1].isLiked.toggle()
-//        } else {
-//            dataSource[indexPath.row - 1].likes += 1
-//            dataSource[indexPath.row - 1].isLiked.toggle()
-//        }
         self.tableView.reloadData()
-        //self.liked = nil
+        
     }
     
     private var headerHeight: CGFloat = 220
@@ -92,6 +61,7 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
     private var heightConstraint: NSLayoutConstraint?
     
     private var dataSource: [Post] = []
+    var localData: [Int: Bool] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -162,18 +132,11 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
         self.dataSource.append(post1)
         self.dataSource.append(post2)
         self.dataSource.append(post3)
+        
+        for element in dataSource {
+            localData[element.id] = false
+        }
     }
-    
-//    public func updateLikes(with value: inout Int) {
-//        isLiked.toggle()
-//        value += 1
-//    }
-//    
-//    private func updateLikesLabel(model: PostTableViewCell.ViewModel) -> PostTableViewCell.ViewModel {
-//        var newModel = model
-//        updateLikes(with: &newModel.likes)
-//        return newModel
-//    }
     
     @objc func didTapSetTitleButton() {
         let ac = UIAlertController(title: "Set title", message: "Enter new title", preferredStyle: .alert)
@@ -222,16 +185,9 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
                 return cell
             }
             cell.likesDelegate = self
-            if self.liked != self.dataSource[indexPath.row - 1].isLiked {
-                self.dataSource[indexPath.row - 1].isLiked = liked
-            }
             let article = self.dataSource[indexPath.row - 1]
             let likes = article.likes + likesCount
             self.dataSource[indexPath.row - 1].likes = likes
-            //liked = article.isLiked
-            print("IndexPath: \(indexPath.row - 1)")
-            print("IsLiked: \(liked)")
-            print("Likes count: \(likes)")
             let viewModel = PostTableViewCell.ViewModel(author: article.author,
                                                         image: article.image,
                                                         description: article.description,

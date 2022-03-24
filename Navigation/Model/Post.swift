@@ -15,4 +15,5 @@ struct Post {
     var views: Int
     var isLiked: Bool
     var isViewed: Bool
+    let id: Int
 }

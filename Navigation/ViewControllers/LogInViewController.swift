@@ -90,8 +90,6 @@ class LogInViewController: UIViewController {
     private lazy var invalidDataLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        //label.text = "Password should be longer than 6 characters and contains at least one:\n- uppercase and lowercase letter (A, z)\n- numeric character (0-9)\n- special character (any character your environment will accept that is not an uppercase or a lowercase letter or a numeric character — for example, !, %, @, #, and so on)"
-        //label.textAlignment = .left
         label.textColor = .lightGray
         label.font = .systemFont(ofSize: 12)
         label.numberOfLines = 8
@@ -164,6 +162,7 @@ class LogInViewController: UIViewController {
         let trailingLogInButtonConstraint = self.logInButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16)
         let heightLogInButtonConstraint = self.logInButton.heightAnchor.constraint(equalToConstant: 50)
         
+        
         NSLayoutConstraint.activate([
             topConstraint,
             leftConstraint,
@@ -217,50 +216,50 @@ class LogInViewController: UIViewController {
     }
     
     @objc private func buttonClicked() {
-        let profileViewController = ProfileViewController()
-        navigationController?.pushViewController(profileViewController, animated: true)
-//        
-//        guard let enteredEmail = loginTextField.text else {return}
-//        guard let enteredPassword = passwordTextField.text else {return}
-//        
-//        let login = validEmail(email: enteredEmail)
-//        let password = validPassword(password: enteredPassword)
-//        
-//        if enteredEmail.isEmpty && enteredPassword.isEmpty {
-//            loginTextField.shake()
-//            passwordTextField.shake()
-//        } else if enteredEmail.isEmpty {
-//            loginTextField.shake()
-//        } else if enteredPassword.isEmpty {
-//            passwordTextField.shake()
-//        } else {
-//            if !password && !login {
-//                invalidDataLabel.text = validationData.invalidEmailAndPassword
-//                invalidDataLabel.textAlignment = .center
-//                invalidDataLabel.isHidden = false
-//                passwordTextField.shake()
-//                loginTextField.shake()
-//            } else if !password {
-//                invalidDataLabel.text = validationData.invalidPasswordText
-//                invalidDataLabel.textAlignment = .left
-//                invalidDataLabel.isHidden = false
-//                passwordTextField.shake()
-//            } else if !login {
-//                invalidDataLabel.text = validationData.invalidEmailText
-//                invalidDataLabel.textAlignment = .center
-//                invalidDataLabel.isHidden = false
-//                loginTextField.shake()
-//            } else {
-//                if loginTextField.text != validationData.defaultLogin || passwordTextField.text != validationData.defaultPassword {
-//                    let ac = UIAlertController(title: "Incorrect login or password", message: nil, preferredStyle: .alert)
-//                    ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//                    present(ac, animated: true)
-//                } else {
-//                    let profileViewController = ProfileViewController()
-//                    navigationController?.pushViewController(profileViewController, animated: true)
-//                }
-//            }
-//        }
+//        let profileViewController = ProfileViewController()
+//        navigationController?.pushViewController(profileViewController, animated: true)
+        
+        guard let enteredEmail = loginTextField.text else {return}
+        guard let enteredPassword = passwordTextField.text else {return}
+        
+        let login = validEmail(email: enteredEmail)
+        let password = validPassword(password: enteredPassword)
+        
+        if enteredEmail.isEmpty && enteredPassword.isEmpty {
+            loginTextField.shake()
+            passwordTextField.shake()
+        } else if enteredEmail.isEmpty {
+            loginTextField.shake()
+        } else if enteredPassword.isEmpty {
+            passwordTextField.shake()
+        } else {
+            if !password && !login {
+                invalidDataLabel.text = validationData.invalidEmailAndPassword
+                invalidDataLabel.textAlignment = .center
+                invalidDataLabel.isHidden = false
+                passwordTextField.shake()
+                loginTextField.shake()
+            } else if !password {
+                invalidDataLabel.text = validationData.invalidPasswordText
+                invalidDataLabel.textAlignment = .left
+                invalidDataLabel.isHidden = false
+                passwordTextField.shake()
+            } else if !login {
+                invalidDataLabel.text = validationData.invalidEmailText
+                invalidDataLabel.textAlignment = .center
+                invalidDataLabel.isHidden = false
+                loginTextField.shake()
+            } else {
+                if loginTextField.text != validationData.defaultLogin || passwordTextField.text != validationData.defaultPassword {
+                    let ac = UIAlertController(title: "Incorrect login or password", message: nil, preferredStyle: .alert)
+                    ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    present(ac, animated: true)
+                } else {
+                    let profileViewController = ProfileViewController()
+                    navigationController?.pushViewController(profileViewController, animated: true)
+                }
+            }
+        }
         
     }
     
