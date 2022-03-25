@@ -7,7 +7,9 @@
 
 import UIKit
 
-class ProfileHeaderView: UIView, UITextFieldDelegate {
+class ProfileHeaderView: UIView, UITextFieldDelegate, ChangeTitleProtocol {
+    
+    weak var profileViewController: ProfileViewController?
         
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
@@ -91,17 +93,6 @@ class ProfileHeaderView: UIView, UITextFieldDelegate {
         return view
     }()
     
-    private lazy var closeButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 20
-        button.alpha = 0
-        button.clipsToBounds = true
-        button.setBackgroundImage(UIImage(named: "closeButton"), for: .normal)
-        button.addTarget(self, action: #selector(self.didTapCloseButton), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     private var statusText: String = "Waiting for something..."
     private var titleText: String = "Milwaukee Bucks"
     private var setStatusButtonTopConstraint: NSLayoutConstraint?
@@ -110,8 +101,9 @@ class ProfileHeaderView: UIView, UITextFieldDelegate {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.statusTextField.delegate = self
+        self.profileViewController?.changeTitleDelegate = self
         self.drawSelf()
-        
+    
     }
     
     required init?(coder: NSCoder) {
@@ -119,8 +111,7 @@ class ProfileHeaderView: UIView, UITextFieldDelegate {
     }
     
     private func drawSelf(){
-        //self.backgroundColor = .lightGray
-        
+
         self.addSubview(self.infoStackView)
         self.addSubview(self.setStatusButton)
         self.addSubview(self.statusTextField)
@@ -177,7 +168,7 @@ class ProfileHeaderView: UIView, UITextFieldDelegate {
     
     @objc private func didTapStatusButton() {
         if self.statusTextField.isHidden {
-            self.setStatusButtonBottomConstraint = self.setStatusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            self.setStatusButtonBottomConstraint = self.setStatusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5)
             NSLayoutConstraint.deactivate([self.setStatusButtonTopConstraint].compactMap({$0}))
             NSLayoutConstraint.activate([self.setStatusButtonBottomConstraint].compactMap({$0}))
             self.statusTextField.isHidden = false
@@ -193,12 +184,11 @@ class ProfileHeaderView: UIView, UITextFieldDelegate {
         }
     }
     
-    @objc private func didTapCloseButton() {
-        
-    }
-    
     func changeTitle(title: String) {
         self.fullNameLabel.text = title
+        self.profileViewController?.reloadInputViews()
+
+        print("change title delegate")
     }
     
 }

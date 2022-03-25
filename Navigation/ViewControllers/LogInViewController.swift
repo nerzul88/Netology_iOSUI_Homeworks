@@ -231,50 +231,50 @@ class LogInViewController: UIViewController {
     }
     
     @objc private func buttonClicked() {
-//        let profileViewController = ProfileViewController()
-//        navigationController?.pushViewController(profileViewController, animated: true)
+        let profileViewController = ProfileViewController()
+        navigationController?.pushViewController(profileViewController, animated: true)
         
-        guard let enteredEmail = loginTextField.text else {return}
-        guard let enteredPassword = passwordTextField.text else {return}
-        
-        let login = validEmail(email: enteredEmail)
-        let password = validPassword(password: enteredPassword)
-        
-        if enteredEmail.isEmpty && enteredPassword.isEmpty {
-            loginTextField.shake()
-            passwordTextField.shake()
-        } else if enteredEmail.isEmpty {
-            loginTextField.shake()
-        } else if enteredPassword.isEmpty {
-            passwordTextField.shake()
-        } else {
-            if !password && !login {
-                invalidDataLabel.text = validationData.invalidEmailAndPassword
-                invalidDataLabel.textAlignment = .center
-                invalidDataLabel.isHidden = false
-                passwordTextField.shake()
-                loginTextField.shake()
-            } else if !password {
-                invalidDataLabel.text = validationData.invalidPasswordText
-                invalidDataLabel.textAlignment = .left
-                invalidDataLabel.isHidden = false
-                passwordTextField.shake()
-            } else if !login {
-                invalidDataLabel.text = validationData.invalidEmailText
-                invalidDataLabel.textAlignment = .center
-                invalidDataLabel.isHidden = false
-                loginTextField.shake()
-            } else {
-                if loginTextField.text != validationData.defaultLogin || passwordTextField.text != validationData.defaultPassword {
-                    let ac = UIAlertController(title: "Incorrect login or password", message: nil, preferredStyle: .alert)
-                    ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                    present(ac, animated: true)
-                } else {
-                    let profileViewController = ProfileViewController()
-                    navigationController?.pushViewController(profileViewController, animated: true)
-                }
-            }
-        }
+//        guard let enteredEmail = loginTextField.text else {return}
+//        guard let enteredPassword = passwordTextField.text else {return}
+//
+//        let login = validEmail(email: enteredEmail)
+//        let password = validPassword(password: enteredPassword)
+//
+//        if enteredEmail.isEmpty && enteredPassword.isEmpty {
+//            loginTextField.shake()
+//            passwordTextField.shake()
+//        } else if enteredEmail.isEmpty {
+//            loginTextField.shake()
+//        } else if enteredPassword.isEmpty {
+//            passwordTextField.shake()
+//        } else {
+//            if !password && !login {
+//                invalidDataLabel.text = validationData.invalidEmailAndPassword
+//                invalidDataLabel.textAlignment = .center
+//                invalidDataLabel.isHidden = false
+//                passwordTextField.shake()
+//                loginTextField.shake()
+//            } else if !password {
+//                invalidDataLabel.text = validationData.invalidPasswordText
+//                invalidDataLabel.textAlignment = .left
+//                invalidDataLabel.isHidden = false
+//                passwordTextField.shake()
+//            } else if !login {
+//                invalidDataLabel.text = validationData.invalidEmailText
+//                invalidDataLabel.textAlignment = .center
+//                invalidDataLabel.isHidden = false
+//                loginTextField.shake()
+//            } else {
+//                if loginTextField.text != validationData.defaultLogin || passwordTextField.text != validationData.defaultPassword {
+//                    let ac = UIAlertController(title: "Incorrect login or password", message: nil, preferredStyle: .alert)
+//                    ac.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+//                    present(ac, animated: true)
+//                } else {
+//                    let profileViewController = ProfileViewController()
+//                    navigationController?.pushViewController(profileViewController, animated: true)
+//                }
+//            }
+//        }
         
     }
     

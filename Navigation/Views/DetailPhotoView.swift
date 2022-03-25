@@ -9,31 +9,30 @@ import UIKit
 
 class DetailPhotoView: UIView {
     
-    var photoImage: UIImage?
-
-    private lazy var photoImageView: UIImageView = {
+    lazy var photoView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        if let photo = photoImage {
-            imageView.image = photo
-        }
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
     private lazy var exitButton: UIButton = {
         let exitButton = UIButton()
-        exitButton.translatesAutoresizingMaskIntoConstraints = false
         exitButton.setTitle("X", for: .normal)
-        exitButton.addTarget(self, action: #selector(exitTapped), for: .touchUpInside)
+        exitButton.addTarget(self, action: #selector(exitPressed), for: .touchUpInside)
         exitButton.backgroundColor = .gray
         exitButton.layer.cornerRadius = 10
+        exitButton.translatesAutoresizingMaskIntoConstraints = false
         return exitButton
     }()
     
+    func set(image: String) {
+        photoView.image = UIImage(named: image)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        //configureTableView()
-        drawSelf()
+        setupView()
         self.backgroundColor = .white
         self.alpha = 0
     }
@@ -42,35 +41,29 @@ class DetailPhotoView: UIView {
         super.init(coder: coder)
     }
     
-    private func drawSelf() {
-        
-        var constraints = [NSLayoutConstraint]()
-        
-        self.addSubview(exitButton)
-        self.addSubview(photoImageView)
-        
-        constraints.append(exitButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10))
-        constraints.append(exitButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30))
-        constraints.append(exitButton.widthAnchor.constraint(equalToConstant: 20))
-        constraints.append(exitButton.heightAnchor.constraint(equalToConstant: 10))
-        
-        constraints.append(photoImageView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor))
-        constraints.append(photoImageView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor))
-        constraints.append(photoImageView.topAnchor.constraint(equalTo: self.exitButton.bottomAnchor, constant: 10))
-        constraints.append(photoImageView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor))
+    private func setupView() {
 
-        NSLayoutConstraint.activate(constraints)
+        self.addSubview(exitButton)
+        self.addSubview(photoView)
         
+        NSLayoutConstraint.activate([
+            
+            self.exitButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 10),
+            self.exitButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -30),
+            self.exitButton.heightAnchor.constraint(equalToConstant: 40),
+            self.exitButton.widthAnchor.constraint(equalToConstant: 40),
+            
+            self.photoView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            self.photoView.leadingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            self.photoView.trailingAnchor.constraint(equalTo: self.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+
+        ])
     }
     
-    @objc func exitTapped() {
+    @objc private func exitPressed() {
         
-        //let postViewCell = PostHeaderViewCell()
-
         UIView.animate(withDuration: 0.5) {
             self.alpha = 0
-            //postViewCell.viewsPost.text = "test"
-            print("Exit button has tapped")
         }
     }
 }

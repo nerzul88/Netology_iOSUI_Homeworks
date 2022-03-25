@@ -43,8 +43,6 @@ class FeedViewController: UIViewController {
         button.addTarget(self, action: #selector(self.buttonTapped), for: .touchUpInside)
         return button
     }()
-    
-    //private var post = Post()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,7 +70,6 @@ class FeedViewController: UIViewController {
     
     @objc private func buttonTapped() {
         let postVC = PostViewController()
-        //postVC.post = post
         self.navigationController?.pushViewController(postVC, animated: true)
     }
 }

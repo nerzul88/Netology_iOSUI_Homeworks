@@ -33,7 +33,6 @@ class InfoViewController: UIViewController {
         alertButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         alertButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
 
-        // Do any additional setup after loading the view.
     }
     
     @objc private func showAlert() {
@@ -43,16 +42,4 @@ class InfoViewController: UIViewController {
         ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         present(ac, animated: true)
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

@@ -8,23 +8,15 @@
 import UIKit
 
 class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsDelegate {
-    
-    var likesCount = 0
-    
-    func viewsChanged(at indexPath: IndexPath) {
-        dataSource[indexPath.row - 1].views += 1
-        self.tableView.reloadData()
-    }
-    
-    func likesChanged() {
         
-        likesCount += 1
-
-        self.tableView.reloadData()
-        
-    }
+    weak var changeTitleDelegate: ChangeTitleProtocol?
     
+    let headerView = ProfileHeaderView()
+    
+    private var dataSource: [Post] = []
     private var headerHeight: CGFloat = 220
+    private var likesCount = 0
+    private var heightConstraint: NSLayoutConstraint?
     
     private lazy var profileHeaderView: ProfileHeaderView = {
         let view = ProfileHeaderView(frame: .zero)
@@ -57,11 +49,6 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
         tableView.layer.borderWidth = 0.5
         return tableView
     }()
-    
-    private var heightConstraint: NSLayoutConstraint?
-    
-    private var dataSource: [Post] = []
-    var localData: [Int: Bool] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -133,9 +120,16 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
         self.dataSource.append(post2)
         self.dataSource.append(post3)
         
-        for element in dataSource {
-            localData[element.id] = false
-        }
+    }
+    
+    func viewsChanged(at indexPath: IndexPath) {
+        dataSource[indexPath.row - 1].views += 1
+        self.tableView.reloadData()
+    }
+    
+    func likesChanged() {
+        likesCount += 1
+        self.tableView.reloadData()
     }
     
     @objc func didTapSetTitleButton() {
@@ -150,13 +144,17 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
                 ac.addAction(okAction)
                 self?.present(ac, animated: true)
             }
-            self?.profileHeaderView.changeTitle(title: newTitle)
+            print("New title: \(newTitle)")
+            self?.changeTitleDelegate?.changeTitle(title: newTitle)
+            self?.tableView.reloadData()
+            
         }
         ac.addAction(okAction)
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
         ac.addAction(cancelAction)
         
+
         present(ac, animated: true)
     }
     

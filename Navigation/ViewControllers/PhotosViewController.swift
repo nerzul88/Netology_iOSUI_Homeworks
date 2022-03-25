@@ -9,19 +9,7 @@ import UIKit
 
 class PhotosViewController: UIViewController {
     
-    private let tapGestureRecognizer = UITapGestureRecognizer()
-    
-    private var photoViewCenterXConstraint: NSLayoutConstraint?
-    private var photoViewCenterYConstraint: NSLayoutConstraint?
-    private var photoViewWidthConstraint: NSLayoutConstraint?
-    private var photoViewHeightConstraint: NSLayoutConstraint?
-    private var photoViewTopConstraint: NSLayoutConstraint?
-    private var photoViewBottomConstraint: NSLayoutConstraint?
-    private var photoViewLeadingConstraint: NSLayoutConstraint?
-    private var photoViewTrailingConstraint: NSLayoutConstraint?
-    private var isExpanded = false
-    private let screenWidth = UIScreen.main.bounds.width
-    private let screenHeight = UIScreen.main.bounds.height
+    let detailPhotoView = DetailPhotoView()
 
     private enum Constants {
         static let itemCount: CGFloat = 3
@@ -44,22 +32,6 @@ class PhotosViewController: UIViewController {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
-    
-    private lazy var photoView: UIView = {
-        var view = UIView()
-        view.isHidden = true
-        view.alpha = 0
-        view.backgroundColor = .red
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private lazy var photoImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
-        return imageView
-    }()
 
     private var collectionDataSource : [CollectionViewModel] = []
 
@@ -77,13 +49,22 @@ class PhotosViewController: UIViewController {
 
     
     private func setupView() {
+        
+        detailPhotoView.translatesAutoresizingMaskIntoConstraints = false
+        
         self.view.addSubview(self.collectionView)
+        self.view.addSubview(detailPhotoView)
         
         NSLayoutConstraint.activate([
             self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
             self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
             self.collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            self.collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            
+            detailPhotoView.topAnchor.constraint(equalTo: view.topAnchor),
+            detailPhotoView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            detailPhotoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            detailPhotoView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
     
@@ -124,9 +105,14 @@ extension PhotosViewController: UICollectionViewDataSource, UICollectionViewDele
         return cell
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = DetailPhotoViewController()
-        vc.selectedImage = collectionDataSource[indexPath.row].image
-        navigationController?.pushViewController(vc, animated: true)
+        
+        UIView.animate(withDuration: 0.5) {
+            
+            let image = self.collectionDataSource[indexPath.item].image
+            
+            self.detailPhotoView.set(image: image)
+            self.detailPhotoView.alpha = 1
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
