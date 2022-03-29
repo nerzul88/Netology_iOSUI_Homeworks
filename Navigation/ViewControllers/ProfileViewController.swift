@@ -8,8 +8,6 @@
 import UIKit
 
 class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsDelegate {
-        
-    weak var changeTitleDelegate: ChangeTitleProtocol?
     
     let headerView = ProfileHeaderView()
     
@@ -20,24 +18,13 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
     
     private lazy var profileHeaderView: ProfileHeaderView = {
         let view = ProfileHeaderView(frame: .zero)
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         return view
-    }()
-    
-    private lazy var setTitleButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Set title", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .blue
-        button.layer.cornerRadius = 4
-        button.addTarget(self, action: #selector(didTapSetTitleButton), for: .touchUpInside)
-        return button
     }()
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.toAutoLayout()
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "DefaultCell")
@@ -53,10 +40,8 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setTitleButtonSetup()
         setupTableView()
         addDataSource()
-        print(dataSource.count)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,52 +50,20 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
         
     }
     
-    private func profileHeaderViewSetup() {
-        self.view.backgroundColor = .white
-        self.view.addSubview(self.profileHeaderView)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         
-        let topConstraint = self.profileHeaderView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = self.profileHeaderView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor)
-        let trailingConstraint = self.profileHeaderView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
-        self.heightConstraint = self.profileHeaderView.heightAnchor.constraint(equalToConstant: 220)
-        
-        NSLayoutConstraint.activate([
-            topConstraint,
-            leadingConstraint,
-            trailingConstraint,
-            self.heightConstraint
-        ].compactMap({$0}))
-    }
-    
-    private func setTitleButtonSetup() {
-        self.view.addSubview(setTitleButton)
-        
-        let setTitleButtonHeightConstraint = self.setTitleButton.heightAnchor.constraint(equalToConstant: 50)
-        let setTitleButtonBottomConstraint = self.setTitleButton.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
-        let setTitleButtonLeadingConstraint = self.setTitleButton.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor)
-        let setTitleButtonTrailingConstraint = self.setTitleButton.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
-        
-        NSLayoutConstraint.activate([
-            setTitleButtonHeightConstraint,
-            setTitleButtonBottomConstraint,
-            setTitleButtonLeadingConstraint,
-            setTitleButtonTrailingConstraint
-        ])
+        navigationController?.navigationBar.isHidden = true
     }
     
     private func setupTableView() {
         self.view.addSubview(self.tableView)
         
-        let tableViewTopConstraint = self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
-        let tableViewBottomConstraint = self.tableView.bottomAnchor.constraint(equalTo: self.setTitleButton.topAnchor)
-        let tableViewLeadingConstraint = self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10)
-        let tableViewTrailingConstraint = self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
-        
         NSLayoutConstraint.activate([
-            tableViewTopConstraint,
-            tableViewBottomConstraint,
-            tableViewLeadingConstraint,
-            tableViewTrailingConstraint
+            self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            self.tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
         ])
 
     }
@@ -130,32 +83,6 @@ class ProfileViewController: UIViewController, ChangeLikesDelegate, ChangeViewsD
     func likesChanged() {
         likesCount += 1
         self.tableView.reloadData()
-    }
-    
-    @objc func didTapSetTitleButton() {
-        let ac = UIAlertController(title: "Set title", message: "Enter new title", preferredStyle: .alert)
-        ac.addTextField()
-        
-        let okAction = UIAlertAction(title: "OK", style: .default) { [weak self, weak ac] _ in
-            guard let newTitle = ac?.textFields?[0].text else {return}
-            if newTitle.isEmpty {
-                let ac = UIAlertController(title: "You should enter something", message: nil, preferredStyle: .alert)
-                let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
-                ac.addAction(okAction)
-                self?.present(ac, animated: true)
-            }
-            print("New title: \(newTitle)")
-            self?.changeTitleDelegate?.changeTitle(title: newTitle)
-            self?.tableView.reloadData()
-            
-        }
-        ac.addAction(okAction)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        ac.addAction(cancelAction)
-        
-
-        present(ac, animated: true)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

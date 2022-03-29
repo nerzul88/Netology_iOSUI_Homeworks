@@ -11,7 +11,7 @@ class PhotosTableViewCell: UITableViewCell {
 
     private lazy var backView: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         view.clipsToBounds = true
         view.layer.borderWidth = 1
         view.layer.borderColor = UIColor.gray.cgColor
@@ -20,7 +20,7 @@ class PhotosTableViewCell: UITableViewCell {
     
     private lazy var stackViewVertical: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.toAutoLayout()
         stackView.axis = .vertical
         stackView.spacing = 12
         stackView.distribution = .fillEqually
@@ -29,7 +29,7 @@ class PhotosTableViewCell: UITableViewCell {
     
     private lazy var stackViewHorizontal: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.toAutoLayout()
         stackView.axis = .horizontal
         stackView.spacing = 8
         stackView.distribution = .fillEqually
@@ -38,7 +38,7 @@ class PhotosTableViewCell: UITableViewCell {
     
     private lazy var stackViewLabels: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.toAutoLayout()
         stackView.axis = .horizontal
         stackView.distribution = .fillProportionally
         return stackView
@@ -46,7 +46,7 @@ class PhotosTableViewCell: UITableViewCell {
     
     private lazy var firstImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.toAutoLayout()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 6
@@ -56,7 +56,7 @@ class PhotosTableViewCell: UITableViewCell {
     
     private lazy var secondImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.toAutoLayout()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 6
@@ -66,7 +66,7 @@ class PhotosTableViewCell: UITableViewCell {
     
     private lazy var thirdImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.toAutoLayout()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 6
@@ -76,7 +76,7 @@ class PhotosTableViewCell: UITableViewCell {
     
     private lazy var fourthImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.toAutoLayout()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 6
@@ -86,7 +86,7 @@ class PhotosTableViewCell: UITableViewCell {
 
     private lazy var photosLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.toAutoLayout()
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textColor = .black
         label.text = "Photos"
@@ -96,7 +96,7 @@ class PhotosTableViewCell: UITableViewCell {
     private lazy var arrowImageView: UIImageView = {
         let arrow = UIImage(systemName: "arrow.right")?.withTintColor(.black, renderingMode: .alwaysOriginal)
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.toAutoLayout()
         imageView.image = arrow
         imageView.clipsToBounds = true
         return imageView
@@ -115,42 +115,29 @@ class PhotosTableViewCell: UITableViewCell {
         self.contentView.backgroundColor = .white
         self.contentView.addSubview(self.backView)
         self.backView.addSubview(self.stackViewVertical)
-        self.stackViewLabels.addArrangedSubview(self.photosLabel)
-        self.stackViewLabels.addArrangedSubview(self.arrowImageView)
-        self.stackViewVertical.addArrangedSubview(self.stackViewLabels)
-        self.stackViewVertical.addArrangedSubview(self.stackViewHorizontal)
-        self.stackViewHorizontal.addArrangedSubview(self.firstImageView)
-        self.stackViewHorizontal.addArrangedSubview(self.secondImageView)
-        self.stackViewHorizontal.addArrangedSubview(self.thirdImageView)
-        self.stackViewHorizontal.addArrangedSubview(self.fourthImageView)
+        self.stackViewLabels.addArrangedSubviews(self.photosLabel, self.arrowImageView)
+        self.stackViewVertical.addArrangedSubviews(self.stackViewLabels, self.stackViewHorizontal)
+        self.stackViewHorizontal.addArrangedSubviews(self.firstImageView,
+                                                     self.secondImageView,
+                                                     self.thirdImageView,
+                                                     self.fourthImageView)
         
-        NSLayoutConstraint.activate(backViewConstraints() + stackViewLabelsConstraints() + stackViewVerticalConstraints())
+        NSLayoutConstraint.activate([
+            self.backView.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            self.backView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            self.backView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            self.backView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor),
+            self.backView.heightAnchor.constraint(equalToConstant: 140),
+            
+            self.stackViewVertical.topAnchor.constraint(equalTo: self.backView.topAnchor, constant: 12),
+            self.stackViewVertical.bottomAnchor.constraint(equalTo: self.backView.bottomAnchor, constant: -12),
+            self.stackViewVertical.leadingAnchor.constraint(equalTo: self.backView.leadingAnchor, constant: 12),
+            self.stackViewVertical.trailingAnchor.constraint(equalTo: self.backView.trailingAnchor, constant: -12),
+            
+            self.arrowImageView.heightAnchor.constraint(equalTo: self.arrowImageView.widthAnchor, multiplier: 0.8),
+            self.arrowImageView.widthAnchor.constraint(equalTo: self.arrowImageView.heightAnchor, multiplier: 1.0),
+            self.stackViewLabels.heightAnchor.constraint(equalToConstant: 12)
+            ])
     }
     
-    private func backViewConstraints() -> [NSLayoutConstraint] {
-        let topConstraint = self.backView.topAnchor.constraint(equalTo: self.contentView.topAnchor)
-        let leadingConstraint = self.backView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor)
-        let trailingConstraint = self.backView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
-        let bottomConstraint = self.backView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
-        let heightConstraint = self.backView.heightAnchor.constraint(equalToConstant: 140)
-        
-        return [topConstraint, leadingConstraint, trailingConstraint, bottomConstraint, heightConstraint]
-    }
-    
-    private func stackViewVerticalConstraints() -> [NSLayoutConstraint] {
-        let topConstraint = self.stackViewVertical.topAnchor.constraint(equalTo: self.backView.topAnchor, constant: 12)
-        let bottomConstraint = self.stackViewVertical.bottomAnchor.constraint(equalTo: self.backView.bottomAnchor, constant: -12)
-        let leadingConstraint = self.stackViewVertical.leadingAnchor.constraint(equalTo: self.backView.leadingAnchor, constant: 12)
-        let trailingConstraint = self.stackViewVertical.trailingAnchor.constraint(equalTo: self.backView.trailingAnchor, constant: -12)
-
-        return [topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]
-    }
-    
-    private func stackViewLabelsConstraints() -> [NSLayoutConstraint] {
-        let arrowHeightConstraint = self.arrowImageView.heightAnchor.constraint(equalTo: self.arrowImageView.widthAnchor, multiplier: 0.8)
-        let arrowWidthConstraint = self.arrowImageView.widthAnchor.constraint(equalTo: self.arrowImageView.heightAnchor, multiplier: 1.0)
-        let heightConstraint = self.stackViewLabels.heightAnchor.constraint(equalToConstant: 12)
-
-        return [arrowHeightConstraint, arrowWidthConstraint, heightConstraint]
-    }
 }

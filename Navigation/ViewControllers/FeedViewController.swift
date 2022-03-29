@@ -11,7 +11,7 @@ class FeedViewController: UIViewController {
     
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.toAutoLayout()
         stackView.axis = .vertical
         stackView.distribution = .fillEqually
         stackView.spacing = 10
@@ -20,6 +20,7 @@ class FeedViewController: UIViewController {
     
     private lazy var firstButton: UIButton = {
         let button = UIButton()
+        button.toAutoLayout()
         button.setTitle("First button", for: .normal)
         button.backgroundColor = .systemGreen
         button.layer.cornerRadius = 4
@@ -33,6 +34,7 @@ class FeedViewController: UIViewController {
     
     private lazy var secondButton: UIButton = {
         let button = UIButton()
+        button.toAutoLayout()
         button.setTitle("Second button", for: .normal)
         button.backgroundColor = .systemRed
         button.layer.cornerRadius = 4
@@ -51,20 +53,14 @@ class FeedViewController: UIViewController {
     }
     
     private func drawSelf() {
-        self.view.addSubview(stackView)
-        self.stackView.addArrangedSubview(firstButton)
-        self.stackView.addArrangedSubview(secondButton)
-        
-        let centerYStackViewConstraint = self.stackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
-        let leadingStackViewConstraint = self.stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10)
-        let trailingStackViewConstraint = self.stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10)
-        let heightStackViewConstraint = self.stackView.heightAnchor.constraint(equalToConstant: 110)
+        self.view.addSubview(self.stackView)
+        self.stackView.addArrangedSubviews(self.firstButton, self.secondButton)
         
         NSLayoutConstraint.activate([
-            centerYStackViewConstraint,
-            leadingStackViewConstraint,
-            trailingStackViewConstraint,
-            heightStackViewConstraint
+            self.stackView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+            self.stackView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            self.stackView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            self.stackView.heightAnchor.constraint(equalToConstant: 110)
         ])
     }
     

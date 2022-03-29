@@ -20,7 +20,3 @@ protocol ChangeLikesDelegate: AnyObject {
 protocol ChangeViewsDelegate: AnyObject {
     func viewsChanged(at indexPath: IndexPath)
 }
-
-protocol ChangeTitleProtocol: AnyObject {
-    func changeTitle(title: String)
-}

@@ -9,21 +9,28 @@ import UIKit
 
 class PhotosCollectionViewCell: UICollectionViewCell {
     
+    var photo: CollectionViewModel? {
+        didSet {
+            guard let imageName = photo?.image else {return}
+            photoGalleryImages.image = UIImage(named: imageName)
+        }
+    }
+    
     private lazy var backView: UIView = {
         let view = UIView()
+        view.toAutoLayout()
         view.clipsToBounds = true
         view.layer.maskedCorners = [
             .layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMinXMaxYCorner, .layerMaxXMaxYCorner
         ]
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
   
     lazy var photoGalleryImages: UIImageView = {
-        let photoGalleryImages = UIImageView()
-        photoGalleryImages.clipsToBounds = true
-        photoGalleryImages.translatesAutoresizingMaskIntoConstraints = false
-        return photoGalleryImages
+        let imageView = UIImageView()
+        imageView.toAutoLayout()
+        imageView.clipsToBounds = true
+        return imageView
     }()
 
     override init(frame: CGRect) {

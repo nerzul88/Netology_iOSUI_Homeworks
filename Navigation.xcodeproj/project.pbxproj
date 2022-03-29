@@ -15,6 +15,7 @@
 		BDAF559E27EA1E4A003C2DCF /* DetailPhotoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDAF559D27EA1E4A003C2DCF /* DetailPhotoView.swift */; };
 		BDB1C19627DA18FD00960B01 /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB1C19527DA18FD00960B01 /* PhotosTableViewCell.swift */; };
 		BDB9712C27D7C2AE0088EB3D /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDB9712B27D7C2AE0088EB3D /* LogInViewController.swift */; };
+		BDD3FCA027F23737007D12AD /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD3FC9F27F23737007D12AD /* Extension.swift */; };
 		BDD945CA27D9032D00A258AF /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD945C927D9032D00A258AF /* PostTableViewCell.swift */; };
 		BDD945CD27D90A9600A258AF /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD945CC27D90A9600A258AF /* Protocols.swift */; };
 		BDDE09EB27E342D30092C385 /* ValidationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDDE09EA27E342D30092C385 /* ValidationData.swift */; };
@@ -41,6 +42,7 @@
 		BDAF559D27EA1E4A003C2DCF /* DetailPhotoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPhotoView.swift; sourceTree = "<group>"; };
 		BDB1C19527DA18FD00960B01 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
 		BDB9712B27D7C2AE0088EB3D /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		BDD3FC9F27F23737007D12AD /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		BDD945C927D9032D00A258AF /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 		BDD945CC27D90A9600A258AF /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		BDDE09EA27E342D30092C385 /* ValidationData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationData.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				BDD945C927D9032D00A258AF /* PostTableViewCell.swift */,
 				BD94C6E727C3AECC00F078AC /* ProfileHeaderView.swift */,
 				BDAF559D27EA1E4A003C2DCF /* DetailPhotoView.swift */,
+				BDD3FC9F27F23737007D12AD /* Extension.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				BDFD997F27BE5DA400FD2C23 /* AppDelegate.swift in Sources */,
 				BDFD999E27BE7F3200FD2C23 /* InfoViewController.swift in Sources */,
 				BD08A10B27DB61A5001D6E72 /* PhotosViewController.swift in Sources */,
+				BDD3FCA027F23737007D12AD /* Extension.swift in Sources */,
 				BDB9712C27D7C2AE0088EB3D /* LogInViewController.swift in Sources */,
 				BDB1C19627DA18FD00960B01 /* PhotosTableViewCell.swift in Sources */,
 				BDFD998127BE5DA400FD2C23 /* SceneDelegate.swift in Sources */,

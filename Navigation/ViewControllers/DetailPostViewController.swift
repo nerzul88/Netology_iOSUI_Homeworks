@@ -36,21 +36,21 @@ class DetailPostViewController: UIViewController {
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.toAutoLayout()
         scrollView.backgroundColor = .white
         return scrollView
     }()
     
     private lazy var contentView: UIView = {
         let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+        view.toAutoLayout()
         view.backgroundColor = .white
         return view
     }()
     
     private lazy var stackViewPost: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.toAutoLayout()
         stackView.axis = .vertical
         stackView.spacing = 10
         return stackView
@@ -58,7 +58,7 @@ class DetailPostViewController: UIViewController {
     
     private lazy var stackViewLikesViews: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.toAutoLayout()
         stackView.axis = .horizontal
         stackView.spacing = 10
         return stackView
@@ -66,7 +66,7 @@ class DetailPostViewController: UIViewController {
     
     private lazy var headerLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.toAutoLayout()
         label.backgroundColor = .clear
         label.numberOfLines = 2
         label.font = UIFont.boldSystemFont(ofSize: 20)
@@ -79,7 +79,7 @@ class DetailPostViewController: UIViewController {
     
     private lazy var pictureImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.toAutoLayout()
         if let image = image {
             imageView.image = UIImage(named: image)
         }
@@ -89,7 +89,7 @@ class DetailPostViewController: UIViewController {
     
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.toAutoLayout()
         label.numberOfLines = 0
         label.font = UIFont(name: "System", size: 14)
         label.textColor = .systemGray
@@ -101,7 +101,7 @@ class DetailPostViewController: UIViewController {
     private lazy var likesLabel: UILabel = {
         let label = UILabel()
         updateViews()
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.toAutoLayout()
         label.backgroundColor = .clear
         label.font = UIFont(name: "System", size: 16)
         label.textColor = .black
@@ -115,7 +115,7 @@ class DetailPostViewController: UIViewController {
     
     private lazy var viewsLabel: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.toAutoLayout()
         label.backgroundColor = .clear
         label.font = UIFont(name: "System", size: 16)
         label.textColor = .black
@@ -136,69 +136,39 @@ class DetailPostViewController: UIViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         navigationController?.navigationBar.isHidden = false
-        
-        
+        navigationController?.navigationBar.backgroundColor = .white
     }
     
     func setupView() {
+        self.view.backgroundColor = .white
         self.view.addSubview(self.scrollView)
         self.scrollView.addSubview(self.contentView)
         self.contentView.addSubview(self.stackViewPost)
-        self.stackViewPost.addArrangedSubview(self.headerLabel)
-        self.stackViewPost.addArrangedSubview(self.pictureImageView)
-        self.stackViewPost.addArrangedSubview(self.descriptionLabel)
-        self.stackViewPost.addArrangedSubview(self.stackViewLikesViews)
-        self.stackViewLikesViews.addArrangedSubview(self.likesLabel)
-        self.stackViewLikesViews.addArrangedSubview(self.viewsLabel)
+        self.stackViewPost.addArrangedSubviews(self.headerLabel, self.pictureImageView, self.descriptionLabel, self.stackViewLikesViews)
+        self.stackViewLikesViews.addArrangedSubviews(self.likesLabel, self.viewsLabel)
         
-        let scrollViewConstraints = self.scrollViewConstraints()
-        let contentViewConstraints = self.contentViewConstraints()
-        let stackViewPostConstraints = self.stackViewPostConstraints()
-        
-        NSLayoutConstraint.activate(
-            scrollViewConstraints +
-            contentViewConstraints +
-            stackViewPostConstraints
-        )
+        NSLayoutConstraint.activate([
+            self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: navigationController?.navigationBar.frame.height ?? 50),
+            self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            self.scrollView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            self.scrollView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            
+            self.contentView.topAnchor.constraint(equalTo: self.scrollView.topAnchor),
+            self.contentView.centerXAnchor.constraint(equalTo: self.scrollView.centerXAnchor),
+            self.contentView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor),
+            self.contentView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor),
+            
+            self.stackViewPost.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            self.stackViewPost.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor),
+            self.stackViewPost.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor),
+            self.stackViewPost.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+        ])
     }
     
-    private func scrollViewConstraints() -> [NSLayoutConstraint] {
-        let topConstraint = self.scrollView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
-        let bottomConstraint = self.scrollView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor)
-        let leadingConstraint = self.scrollView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor, constant: 10)
-        let trailingConstraint = self.scrollView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor, constant: -10)
-        
-        return [topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]
-    }
-    
-    private func contentViewConstraints() -> [NSLayoutConstraint] {
-        let topConstraint = self.contentView.topAnchor.constraint(equalTo: self.scrollView.topAnchor)
-        let centerXConstraint = self.contentView.centerXAnchor.constraint(equalTo: self.scrollView.centerXAnchor)
-        let bottomConstraint = self.contentView.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor)
-        let widthConstraint = self.contentView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor)
-        return [topConstraint, bottomConstraint, centerXConstraint, widthConstraint]
-    }
-    
-    private func stackViewPostConstraints() -> [NSLayoutConstraint] {
-        let topConstraint = self.stackViewPost.topAnchor.constraint(equalTo: self.contentView.topAnchor)
-        let leadingConstraint = self.stackViewPost.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor)
-        let trailingConstraint = self.stackViewPost.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
-        let bottomConstraint = self.stackViewPost.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
 
-        return [topConstraint, leadingConstraint, trailingConstraint, bottomConstraint]
-    }
-    
-    private func stackViewLikesViewsConstraints() -> [NSLayoutConstraint] {
-        let topConstraint = self.stackViewLikesViews.topAnchor.constraint(greaterThanOrEqualTo: self.stackViewPost.bottomAnchor, constant: 20)
-        let leadingConstraint = self.stackViewLikesViews.leadingAnchor.constraint(equalTo: self.stackViewPost.leadingAnchor)
-        let trailingConstraint = self.stackViewLikesViews.trailingAnchor.constraint(equalTo: self.stackViewPost.trailingAnchor)
-        let bottomConstraint = self.stackViewLikesViews.bottomAnchor.constraint(equalTo: self.stackViewPost.bottomAnchor)
-
-        return [topConstraint, leadingConstraint, trailingConstraint, bottomConstraint]
-    }
 
 }

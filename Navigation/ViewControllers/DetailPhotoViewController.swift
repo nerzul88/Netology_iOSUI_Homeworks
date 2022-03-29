@@ -13,7 +13,7 @@ class DetailPhotoViewController: UIViewController {
     
     private lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.toAutoLayout()
         if let image = selectedImage {
             imageView.image = UIImage(named: image)
         }

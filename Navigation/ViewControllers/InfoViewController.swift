@@ -11,7 +11,7 @@ class InfoViewController: UIViewController {
     
     private lazy var alertButton: UIButton = {
         let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+        button.toAutoLayout()
         button.setTitle("Show alert", for: .normal)
         button.setTitleColor(.black, for: .normal)
         button.layer.borderWidth = 1
@@ -25,14 +25,19 @@ class InfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupView()
+    }
+    
+    private func setupView() {
         view.backgroundColor = .white
         view.addSubview(alertButton)
         
-        alertButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
-        alertButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        alertButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        alertButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-
+        NSLayoutConstraint.activate([
+            self.alertButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+            self.alertButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            self.alertButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            self.alertButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
     
     @objc private func showAlert() {

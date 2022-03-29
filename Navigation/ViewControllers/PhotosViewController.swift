@@ -25,11 +25,12 @@ class PhotosViewController: UIViewController {
     
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.layout)
+        collectionView.toAutoLayout()
+        collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(PhotosCollectionViewCell.self, forCellWithReuseIdentifier: "PhotosCollectionViewCell")
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "DefaultCollectionCell")
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
 
@@ -42,29 +43,31 @@ class PhotosViewController: UIViewController {
         self.title = "Photo Gallery"
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.backgroundColor = .white
     }
 
     
     private func setupView() {
         
-        detailPhotoView.translatesAutoresizingMaskIntoConstraints = false
-        
-        self.view.addSubview(self.collectionView)
-        self.view.addSubview(detailPhotoView)
+        self.view.backgroundColor = .white
+        self.detailPhotoView.toAutoLayout()
+        self.view.addSubviews(self.collectionView, self.detailPhotoView)
+
         
         NSLayoutConstraint.activate([
-            self.collectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
-            self.collectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            self.collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+            self.collectionView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: navigationController?.navigationBar.frame.height ?? 50),
+            self.collectionView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            self.collectionView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
+            self.collectionView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
             
-            detailPhotoView.topAnchor.constraint(equalTo: view.topAnchor),
-            detailPhotoView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            detailPhotoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            detailPhotoView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            self.detailPhotoView.topAnchor.constraint(equalTo: view.topAnchor),
+            self.detailPhotoView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            self.detailPhotoView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            self.detailPhotoView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
     
@@ -99,8 +102,9 @@ extension PhotosViewController: UICollectionViewDataSource, UICollectionViewDele
             return cell
         }
         cell.backgroundColor = .systemGray6
-        let photos = collectionDataSource[indexPath.row]
-        cell.photoGalleryImages.image = UIImage(named: photos.image)
+        let photo = collectionDataSource[indexPath.row]
+        //cell.photoGalleryImages.image = UIImage(named: photos.image)
+        cell.photo = photo
         cell.photoGalleryImages.contentMode = .scaleAspectFill
         return cell
     }

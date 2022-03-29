@@ -8,7 +8,7 @@
 import Foundation
 
 struct CollectionViewModel: Equatable {
-    var image:String
+    var image: String
 
     init(image: String){
         self.image = image
