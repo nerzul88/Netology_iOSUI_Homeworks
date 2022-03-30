@@ -108,15 +108,6 @@ class LogInViewController: UIViewController {
 
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        self.navigationController?.navigationBar.isHidden = true
-//        let nc = NotificationCenter.default
-//        nc.addObserver(self, selector: #selector(kbdShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        nc.addObserver(self, selector: #selector(kbdHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-//        addTapGestureToHideKeyboard()
-//    }
-//
     override func viewWillAppear(_ animated: Bool) {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -195,8 +186,6 @@ class LogInViewController: UIViewController {
     }
     
     @objc private func buttonClicked() {
-//        let profileViewController = ProfileViewController()
-//        navigationController?.pushViewController(profileViewController, animated: true)
         
         guard let enteredEmail = loginTextField.text else {return}
         guard let enteredPassword = passwordTextField.text else {return}
@@ -250,28 +239,10 @@ class LogInViewController: UIViewController {
             let contentOffset: CGPoint = notification.name == UIResponder.keyboardWillHideNotification
             ? .zero
             : CGPoint(x: 0, y: keyboardHeight / 2)
-            self.scrollView.contentOffset = contentOffset // .setContentOffset()
+            self.scrollView.contentOffset = contentOffset
         }
     }
-    
-//    @objc private func kbdShow(notification: NSNotification) {
-//        if let kbdSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-//            let heightOfContent = loginPasswordStackView.bounds.height + logInButton.bounds.height + logInButton.bounds.height + invalidDataLabel.bounds.height
-//            scrollView.contentInset.bottom = kbdSize.height
-//            scrollView.verticalScrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbdSize.height, right: 0)
-//
-//            if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-//                let keyboardRectangle = keyboardFrame.cgRectValue
-//                let keyboardHeight = keyboardRectangle.height
-//                let frame = self.view.safeAreaLayoutGuide.layoutFrame
-//                let contentOffset: CGPoint = notification.name == UIResponder.keyboardWillHideNotification ? .zero: CGPoint(x: 0, y: heightOfContent - keyboardHeight * 1.5)
-//                if heightOfContent + keyboardHeight >= frame.height {
-//                self.scrollView.contentOffset = contentOffset
-//            }
-//            }
-//        }
-//    }
-//
+
     @objc private func kbdHide(notification: NSNotification) {
         scrollView.contentInset.bottom = .zero
         scrollView.verticalScrollIndicatorInsets = .zero

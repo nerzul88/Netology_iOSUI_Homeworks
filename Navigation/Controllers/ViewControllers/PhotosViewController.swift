@@ -103,7 +103,6 @@ extension PhotosViewController: UICollectionViewDataSource, UICollectionViewDele
         }
         cell.backgroundColor = .systemGray6
         let photo = collectionDataSource[indexPath.row]
-        //cell.photoGalleryImages.image = UIImage(named: photos.image)
         cell.photo = photo
         cell.photoGalleryImages.contentMode = .scaleAspectFill
         return cell

@@ -57,7 +57,6 @@ class DetailPhotoView: UIView {
     }
     
     @objc private func exitPressed() {
-        
         UIView.animate(withDuration: 0.5) {
             self.alpha = 0
         }
